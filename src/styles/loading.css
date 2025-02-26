@@ -1,0 +1,38 @@
+.pulse {
+    width: 45.8px;
+    height: 82.44px;
+    position: relative;
+}
+
+.pulse:before,
+.pulse:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #868686;
+    box-shadow: 0 0 0 28px;
+    clip-path: polygon(
+        100% 0,
+        23% 46%,
+        46% 44%,
+        15% 69%,
+        38% 67%,
+        0 100%,
+        76% 57%,
+        53% 58%,
+        88% 33%,
+        60% 37%
+    );
+}
+
+.pulse:after {
+    animation: pulse-9sj83nmd 1s infinite;
+    transform: perspective(224px) translateZ(0px);
+}
+
+@keyframes pulse-9sj83nmd {
+    to {
+        transform: perspective(224px) translateZ(134.4px);
+        opacity: 0;
+    }
+}
