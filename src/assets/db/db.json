@@ -1,0 +1,123 @@
+{
+    "projects": [
+      {
+        "id": 1,
+        "name": "Project A",
+        "des": "Mô tả về Project A",
+        "tasks": [101, 102, 103],
+        "statuses": [1, 2, 3],
+        "totalTask": 3,
+        "successTask": 1,
+        "creator": 1,
+        "members": [2, 3, 4],
+        "roles": [1, 2, 3]
+      },
+      {
+        "id": 2,
+        "name": "Project B",
+        "des": "Mô tả về Project B",
+        "tasks": [104, 105, 106],
+        "statuses": [4, 5, 6],
+        "totalTask": 3,
+        "successTask": 2,
+        "creator": 2,
+        "members": [1, 3, 5],
+        "roles": [4, 5]
+      }
+    ],
+    "tasks": [
+      {
+        "id": 101,
+        "name": "Task 1",
+        "des": "Mô tả task 1",
+        "projectId": 1,
+        "creator": 3,
+        "status": 1,
+        "assignTo": 4,
+        "statedAt": 1708938000,
+        "doneAt": 1709123400
+      },
+      {
+        "id": 102,
+        "name": "Task 2",
+        "des": "Mô tả task 2",
+        "projectId": 1,
+        "creator": 3,
+        "status": 1,
+        "assignTo": 4,
+        "statedAt": 1708938000,
+        "doneAt": 1709123400
+      },
+      {
+        "id": 103,
+        "name": "Task 3",
+        "des": "Mô tả task 3",
+        "projectId": 1,
+        "creator": 3,
+        "status": 1,
+        "assignTo": 4,
+        "statedAt": 1708938000,
+        "doneAt": 1709123400
+      },
+      {
+        "id": 104,
+        "name": "Task 4",
+        "des": "Mô tả task 4",
+        "projectId": 2,
+        "creator": 2,
+        "status": 2,
+        "assignTo": 1,
+        "statedAt": 1709024400,
+        "doneAt": 1709299200
+      },
+      {
+        "id": 105,
+        "name": "Task 5",
+        "des": "Mô tả task 5",
+        "projectId": 2,
+        "creator": 1,
+        "status": 3,
+        "assignTo": 3,
+        "statedAt": 1708851600,
+        "doneAt": 1708943400
+      },
+      {
+        "id": 106,
+        "name": "Task 6",
+        "des": "Mô tả task 6",
+        "projectId": 2,
+        "creator": 4,
+        "status": 4,
+        "assignTo": 5,
+        "statedAt": 1709000000,
+        "doneAt": null
+      }
+    ],
+    "statuses": [
+      { "id": 1, "name": "Open", "des": "Task mới tạo" },
+      { "id": 2, "name": "In Progress", "des": "Task đang thực hiện" },
+      { "id": 3, "name": "Done", "des": "Task đã hoàn thành" },
+      { "id": 4, "name": "Not Started", "des": "Chưa bắt đầu" },
+      { "id": 5, "name": "Ongoing", "des": "Đang tiến hành" },
+      { "id": 6, "name": "Completed", "des": "Đã hoàn thành" },
+      { "id": 7, "name": "On Hold", "des": "Tạm dừng do vấn đề" }
+    ],
+    "users": [
+      { "id": 1, "fullname": "Nguyễn Văn A", "avatar": "avatar1.png", "email": "nguyenvana@example.com", "password": "Hello11@" },
+      { "id": 2, "fullname": "Trần Thị B", "avatar": "avatar2.png", "email": "tranthib@example.com", "password": "Hello11@" },
+      { "id": 3, "fullname": "Lê Văn C", "avatar": "avatar3.png", "email": "levanc@example.com", "password": "Hello11@" },
+      { "id": 4, "fullname": "Hoàng D", "avatar": "avatar4.png", "email": "hoangd@example.com", "password": "Hello11@" },
+      { "id": 5, "fullname": "Phạm Thị E", "avatar": "avatar5.png", "email": "phamthie@example.com", "password": "Hello11@" },
+      { "id": 5, "fullname": "Nguyen Quoc Viet", "avatar": "avatar5.png", "email": "viet@gmail.com", "password": "Hello11@" }
+    ],
+    "userRoleInProject": [
+      { "id": 1, "projectId": 1, "member": 2, "role": 1 },
+      { "id": 2, "projectId": 1, "member": 3, "role": 2 },
+      { "id": 3, "projectId": 1, "member": 4, "role": 3 },
+      { "id": 4, "projectId": 2, "member": 1, "role": 4 },
+      { "id": 5, "projectId": 2, "member": 3, "role": 2 },
+      { "id": 6, "projectId": 3, "member": 2, "role": 1 },
+      { "id": 7, "projectId": 3, "member": 4, "role": 3 }
+    ]
+  }
+  

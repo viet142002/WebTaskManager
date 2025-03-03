@@ -1,24 +1,19 @@
-import { BrowserRouter, Route, Routes } from "react-router";
-import { lazy, Suspense } from "react";
+import { Suspense, lazy } from "react";
 
-const LoginPage = lazy(() => import("@/pages/Login"));
-const RegisterPage = lazy(() => import("@/pages/Register"));
-const WelcomePage = lazy(() => import("@/pages/Welcome"));
+import LoadingPencil from "@/components/Loading/LoadingPencil";
 
-import LoadingLight from "@/components/Loading/LoadingLight";
+const Pages = lazy(() => import("./Pages"));
+const GlobalComponent = lazy(() => import("@/components/GlobalComponent"));
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Suspense fallback={<LoadingLight />}>
-        <Routes>
-          <Route index Component={WelcomePage} />
-          <Route path="/login" Component={LoginPage} />
-          <Route path="/register" Component={RegisterPage} />
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
-  );
+    return (
+        <>
+            <Suspense fallback={<LoadingPencil isFixed />}>
+                <Pages />
+                <GlobalComponent />
+            </Suspense>
+        </>
+    );
 }
 
 export default App;

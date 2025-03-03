@@ -1,6 +1,8 @@
+import { toast } from "sonner";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { z } from "zod";
-import { Link } from "react-router";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -13,8 +15,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PASS_WORD_REGEX, ROUTES } from "@/utils/constants";
-import OtherRegister from "@/pages/Register/OtherRegister";
+import OtherRegister from "@/pages/Register/components/OtherRegister";
 import { Separator } from "@/components/ui/separator";
+import { authService } from "@/services/auth.service";
+import { ErrorWithCode } from "@/utils/helper";
+import Spinner from "@/components/Loading/Spinner";
+import ButtonNav from "@/components/ui/button-nav";
 
 const formSchema = z.object({
     email: z.string().email("Vui lòng nhập đúng email"),
@@ -35,13 +41,29 @@ const DEFAULT_VALUES_REGISTER: z.infer<typeof formSchema> = {
 };
 
 function LoginForm() {
+    const navigate = useNavigate();
+    const [isPendingLogin, startTransaction] = useTransition();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: DEFAULT_VALUES_REGISTER,
     });
 
+    const login = async (values: z.infer<typeof formSchema>) => {
+        try {
+            const res = await authService.login({
+                email: values.email,
+                pass: values.password,
+            });
+            console.log(res);
+            navigate(ROUTES.OVERVIEW);
+        } catch (error) {
+            toast.error((error as ErrorWithCode).message);
+        }
+    }
+
     const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+        startTransaction(() => login(values));
     };
 
     return (
@@ -50,18 +72,19 @@ function LoginForm() {
                 <h1 className="text-4xl font-bold text-white">Đăng nhập</h1>
                 <p className="my-3 text-lg text-white">
                     Bạn chưa có tài khoản?{" "}
-                    <Link
-                        className="duration-200 hover:text-blue-500"
+                    <ButtonNav
+                        className="duration-200 hover:text-blue-500 p-0 text-white text-base"
                         to={ROUTES.REGISTER}
+                        variant='link'
                     >
                         Đăng ký
-                    </Link>
+                    </ButtonNav>
                 </p>
             </div>
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-4 mt-4"
+                    className="mt-4 space-y-4"
                 >
                     <FormField
                         control={form.control}
@@ -70,7 +93,7 @@ function LoginForm() {
                             <FormItem>
                                 <FormControl>
                                     <Input
-                                        className="rounded-sm border-[#7049b3]"
+                                        className="rounded-sm border-[#7049b3] text-white"
                                         placeholder="Email"
                                         {...field}
                                     />
@@ -86,7 +109,7 @@ function LoginForm() {
                             <FormItem className="mb-8">
                                 <FormControl>
                                     <Input
-                                        className="rounded-sm border-[#7049b3]"
+                                        className="rounded-sm border-[#7049b3] text-white"
                                         placeholder="Nhập mật khẩu"
                                         type="password"
                                         {...field}
@@ -101,7 +124,7 @@ function LoginForm() {
                         className="w-full bg-black/20 transition-all duration-200 hover:bg-black/30"
                         size={"lg"}
                     >
-                        Đăng nhập
+                        Đăng nhập {isPendingLogin && <Spinner />}
                     </Button>
                 </form>
             </Form>

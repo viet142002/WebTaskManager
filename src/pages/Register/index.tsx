@@ -1,5 +1,5 @@
-import Banner from "@/pages/Register/Banner";
-import RegisterForm from "@/pages/Register/RegisterForm";
+import Banner from "@/pages/Register/components/Banner";
+import RegisterForm from "@/pages/Register/components/RegisterForm";
 
 function RegisterPage() {
     return (

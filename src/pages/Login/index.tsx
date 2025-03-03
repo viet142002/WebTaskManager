@@ -1,5 +1,5 @@
-import Banner from "@/pages/Login/Banner";
-import LoginForm from "@/pages/Login/LoginForm";
+import Banner from "@/pages/Login/components/Banner";
+import LoginForm from "@/pages/Login/components/LoginForm";
 
 function LoginPage() {
     return (

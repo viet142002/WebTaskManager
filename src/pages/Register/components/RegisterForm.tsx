@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Link } from "react-router";
+import { NavLink } from "react-router";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -13,8 +13,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PASS_WORD_REGEX, ROUTES } from "@/utils/constants";
-import OtherRegister from "@/pages/Register/OtherRegister";
+import OtherRegister from "@/pages/Register/components/OtherRegister";
 import { Separator } from "@/components/ui/separator";
+import { authService } from "@/services/auth.service";
+import { useTransition } from "react";
+import Spinner from "@/components/Loading/Spinner";
 
 const formSchema = z.object({
     firstname: z.string().min(2, {
@@ -43,13 +46,27 @@ const DEFAULT_VALUES_REGISTER: z.infer<typeof formSchema> = {
 };
 
 function RegisterForm() {
+    const [isPendingRegister, startIsPendingRegister] = useTransition();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: DEFAULT_VALUES_REGISTER,
     });
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+    const register = async (values: z.infer<typeof formSchema>) => {
+        try {
+            const res = await authService.register({
+                email: values.email,
+                pass: values.password,
+                fullname: values.firstname + " " + values.lastname,
+            });
+            console.log("res", res);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        startIsPendingRegister(() => register(values));
     };
 
     return (
@@ -58,18 +75,20 @@ function RegisterForm() {
                 <h1 className="text-4xl font-bold text-white">Tạo tài khoản</h1>
                 <p className="my-3 text-lg text-white">
                     Bạn đã có tài khoản?{" "}
-                    <Link
+                    <NavLink
                         className="duration-200 hover:text-blue-500"
                         to={ROUTES.LOGIN}
                     >
-                        Đăng nhập
-                    </Link>
+                        {({ isPending }) => (
+                            <span>Đăng nhập {isPending && <Spinner />}</span>
+                        )}
+                    </NavLink>
                 </p>
             </div>
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-4 mt-4"
+                    className="mt-4 space-y-4"
                 >
                     <div className="flex justify-between gap-2">
                         <FormField
@@ -79,7 +98,7 @@ function RegisterForm() {
                                 <FormItem className="flex-[1]">
                                     <FormControl>
                                         <Input
-                                            className="rounded-sm border-[#7049b3]"
+                                            className="rounded-sm border-[#7049b3] text-white"
                                             placeholder="Họ"
                                             {...field}
                                         />
@@ -95,7 +114,7 @@ function RegisterForm() {
                                 <FormItem className="flex-[1]">
                                     <FormControl>
                                         <Input
-                                            className="rounded-sm border-[#7049b3]"
+                                            className="rounded-sm border-[#7049b3] text-white"
                                             placeholder="Tên"
                                             {...field}
                                         />
@@ -112,7 +131,7 @@ function RegisterForm() {
                             <FormItem>
                                 <FormControl>
                                     <Input
-                                        className="rounded-sm border-[#7049b3]"
+                                        className="rounded-sm border-[#7049b3] text-white"
                                         placeholder="Email"
                                         {...field}
                                     />
@@ -128,7 +147,7 @@ function RegisterForm() {
                             <FormItem className="mb-8">
                                 <FormControl>
                                     <Input
-                                        className="rounded-sm border-[#7049b3]"
+                                        className="rounded-sm border-[#7049b3] text-white"
                                         placeholder="Nhập mật khẩu"
                                         type="password"
                                         {...field}
@@ -143,7 +162,7 @@ function RegisterForm() {
                         className="w-full bg-black/20 transition-all duration-200 hover:bg-black/30"
                         size={"lg"}
                     >
-                        Đăng ký
+                        Đăng ký {isPendingRegister ? <Spinner /> : null}
                     </Button>
                 </form>
             </Form>

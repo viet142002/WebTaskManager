@@ -1,12 +1,10 @@
-import { useTheme } from "next-themes"
+import { memo } from "react"
 import { Toaster as Sonner, ToasterProps } from "sonner"
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme()
-
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
+      theme={'light'}
       className="toaster group"
       toastOptions={{
         classNames: {
@@ -24,4 +22,4 @@ const Toaster = ({ ...props }: ToasterProps) => {
   )
 }
 
-export { Toaster }
+export default memo(Toaster)

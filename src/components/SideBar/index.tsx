@@ -1,54 +1,70 @@
-import { Link } from 'react-router';
+import { NavLink, useParams } from "react-router";
+import clsx from "clsx";
 
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarMenu,
+    SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-import { ROUTES_SIDE_BAR } from "@/utils/constants";
+import { IDS_ROUTE, ROUTES_SIDE_BAR } from "@/utils/constants";
+import SidebarProjectHeader from "@/components/SideBar/components/SidebarProjectHeader";
 
 function MainSideBar() {
-  return (
-    <Sidebar>
-      <SidebarHeader />
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {ROUTES_SIDE_BAR.map((item) => (
-                <MenuItem item={item} key={item.key} />
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter />
-    </Sidebar>
-  );
+    const params = useParams();
+    return (
+        <Sidebar>
+            <SidebarProjectHeader />
+            <SidebarContent>
+                <SidebarGroup>
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            {ROUTES_SIDE_BAR.map((item) => (
+                                <MenuItem
+                                    item={item}
+                                    key={item.key}
+                                    projectId={params?.[IDS_ROUTE.PROJECT_ID]}
+                                />
+                            ))}
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
+            </SidebarContent>
+            <SidebarFooter />
+        </Sidebar>
+    );
 }
 
 export default MainSideBar;
 
 interface MenuItemProps {
-  item: (typeof ROUTES_SIDE_BAR)[0];
+    item: (typeof ROUTES_SIDE_BAR)[number];
+    projectId?: string | number;
 }
 
-const MenuItem = ({ item }: MenuItemProps) => {
-  return (
-    <SidebarMenuItem key={item.title} onChange={(props) => console.log(props)}>
-      <SidebarMenuButton asChild>
-        <Link to={item.url}>
-          <item.icon />
-          <span>{item.title}</span>
-        </Link>
-      </SidebarMenuButton>
-    </SidebarMenuItem>
-  );
+const MenuItem = ({ item, projectId }: MenuItemProps) => {
+    return (
+        <SidebarMenuItem key={item.title}>
+            <NavLink
+                to={item.url.replace(
+                    `:${IDS_ROUTE.PROJECT_ID}`,
+                    projectId + "",
+                )}
+                className={({ isActive, isPending }) =>
+                    clsx({
+                        "flex w-full gap-2 rounded-md p-2": true,
+                        "bg-amber-200": isActive,
+                        "bg-blue-400": isPending,
+                    })
+                }
+            >
+                <item.icon className="!size-5" />
+                <span>{item.title}</span>
+            </NavLink>
+        </SidebarMenuItem>
+    );
 };
