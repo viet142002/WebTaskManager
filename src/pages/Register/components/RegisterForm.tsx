@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { NavLink } from "react-router";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -18,6 +17,7 @@ import { Separator } from "@/components/ui/separator";
 import { authService } from "@/services/auth.service";
 import { useTransition } from "react";
 import Spinner from "@/components/Loading/Spinner";
+import ButtonNav from "@/components/ui/button-nav";
 
 const formSchema = z.object({
     firstname: z.string().min(2, {
@@ -75,14 +75,14 @@ function RegisterForm() {
                 <h1 className="text-4xl font-bold text-white">Tạo tài khoản</h1>
                 <p className="my-3 text-lg text-white">
                     Bạn đã có tài khoản?{" "}
-                    <NavLink
-                        className="duration-200 hover:text-blue-500"
+                    <ButtonNav
+                        className="duration-200 hover:text-blue-500 p-0 text-white text-base"
                         to={ROUTES.LOGIN}
+                        variant='link'
+                        viewTransition
                     >
-                        {({ isPending }) => (
-                            <span>Đăng nhập {isPending && <Spinner />}</span>
-                        )}
-                    </NavLink>
+                        Đăng nhập
+                    </ButtonNav>
                 </p>
             </div>
             <Form {...form}>

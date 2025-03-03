@@ -21,6 +21,8 @@ import { authService } from "@/services/auth.service";
 import { ErrorWithCode } from "@/utils/helper";
 import Spinner from "@/components/Loading/Spinner";
 import ButtonNav from "@/components/ui/button-nav";
+import ChangeLang from "@/components/common/ChangeLang";
+import { useTranslation } from "@/hooks";
 
 const formSchema = z.object({
     email: z.string().email("Vui lòng nhập đúng email"),
@@ -41,6 +43,7 @@ const DEFAULT_VALUES_REGISTER: z.infer<typeof formSchema> = {
 };
 
 function LoginForm() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [isPendingLogin, startTransaction] = useTransition();
 
@@ -69,13 +72,17 @@ function LoginForm() {
     return (
         <section className="flex flex-col justify-center">
             <div>
-                <h1 className="text-4xl font-bold text-white">Đăng nhập</h1>
+                <ChangeLang /> 
+                <h1 className="text-4xl font-bold text-white">
+                    {t('login')}
+                </h1>
                 <p className="my-3 text-lg text-white">
-                    Bạn chưa có tài khoản?{" "}
+                    {t('dont_have_account')}{" "}
                     <ButtonNav
                         className="duration-200 hover:text-blue-500 p-0 text-white text-base"
                         to={ROUTES.REGISTER}
                         variant='link'
+                        viewTransition
                     >
                         Đăng ký
                     </ButtonNav>

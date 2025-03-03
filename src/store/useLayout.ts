@@ -12,7 +12,9 @@ interface ILayout {
     modalConfirm: IModalConfirm;
     openModalConfirm: (props: Partial<IModalConfirm>) => void,
     closeModalConfirm: () => void,
+
     isLoadingGlobal: boolean;
+    toggleLoadingGlobal: () => void;
 }
 
 const INIT_VALUE: ILayout = {
@@ -25,7 +27,8 @@ const INIT_VALUE: ILayout = {
     },
     openModalConfirm: () => {},
     closeModalConfirm: () => {},
-    isLoadingGlobal: false
+    isLoadingGlobal: false,
+    toggleLoadingGlobal: () => {}
 };
 
 export const useLayout = create<ILayout>((set) => ({
@@ -36,5 +39,5 @@ export const useLayout = create<ILayout>((set) => ({
     })),
 
     isLoadingGlobal: INIT_VALUE.isLoadingGlobal,
-    toggleLoadingGlobalL: () => set(state => ({ isLoadingGlobal: !state.isLoadingGlobal })),
+    toggleLoadingGlobal: () => set(state => ({ isLoadingGlobal: !state.isLoadingGlobal })),
 }));

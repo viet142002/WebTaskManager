@@ -1,0 +1,13 @@
+{
+  "400": "",
+  "login": "",
+  "register": "",
+  "forgot_password": "",
+  "had_account": "",
+  "dont_have_account": "",
+  "errors": {
+    "account": {
+      "400": ""
+    }
+  }
+}
