@@ -4,7 +4,7 @@
   "register": "Đăng ký",
   "forgot_password": "",
   "had_account": "",
-  "dont_have_account": "",
+  "dont_have_account": "Bạn chưa có tài khoản?",
   "errors": {
     "account": {
       "400": "Ngu"

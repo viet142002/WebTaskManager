@@ -7,13 +7,13 @@ import ModalConfirm from "@/components/Modal/ModalConfirm";
 import { useLayout } from "@/store/useLayout";
 
 function GlobalComponent() {
-    const { modalConfirm, isLoadingGlobal } = useLayout(useShallow((state) => ({ modalConfirm: state.modalConfirm, isLoadingGlobal: state.isLoadingGlobal })));
+    const isLoadingGlobal = useLayout(useShallow((state) => state.isLoadingGlobal));
 
     return (
         <>
             <Toaster />
             {isLoadingGlobal && <LoadingPencil />}
-            {modalConfirm.isOpen && <ModalConfirm {...modalConfirm} />}
+            <ModalConfirm />
         </>
     )
 }

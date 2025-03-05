@@ -1,4 +1,4 @@
-import { Outlet, useLocation, useNavigate } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 
 import { toast } from "sonner"
 import { ROUTES } from "@/utils/constants";
@@ -12,11 +12,9 @@ interface ProtectPageProps {
 
 function ProtectPage({ isAuth, access }: ProtectPageProps) {
     const navigate = useNavigate();
-    const location = useLocation();
 
     const userAccess = [1,2,3];
-    const isLogin = false;
-    // const isLogin = useAuth((state) => state.isAuth);
+    const isLogin = useAuth((state) => state.isAuth);
     const openModalConfirm = useLayout(state => state.openModalConfirm);
 
     if (isAuth && !isLogin) {
@@ -36,11 +34,7 @@ function ProtectPage({ isAuth, access }: ProtectPageProps) {
         if (!userAccess.some(a => access.includes(a))) {
             toast.warning('Bạn không có quyền truy cập. Vui lòng yêu cầu quyền và quay lại');
             // Nếu không thể go back thì chuyển hướng đến trang welcome
-            if (location.key !== 'default') {
-                navigate(-1);
-            } else {
-                navigate('/')
-            }
+            navigate('/')
             return;
         }
     }

@@ -1,7 +1,8 @@
 import { delay, fakeApi } from "@/services/fakeApi";
 import instanceAxios from "@/services/instanceAxios";
 import { ErrorWithCode } from "@/utils/helper";
-const isUseFakeApi = import.meta.env.VITE_IS_FAKE_API;
+
+const isUseFakeApi = true;
 
 export const authService = {
     login: async ({ pass, email }: { pass: string, email: string }) => {

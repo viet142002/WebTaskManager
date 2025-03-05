@@ -11,3 +11,5 @@ export class ErrorWithCode extends Error {
         return t(`${refix ?? 'error'}.${this.code}`);
     }
 }
+
+window.ErrorWithCode = ErrorWithCode;

@@ -1,5 +1,6 @@
 import { NavLink, useParams } from "react-router";
 import clsx from "clsx";
+import { memo } from "react";
 
 import {
     Sidebar,
@@ -39,7 +40,7 @@ function MainSideBar() {
     );
 }
 
-export default MainSideBar;
+export default memo(MainSideBar);
 
 interface MenuItemProps {
     item: (typeof ROUTES_SIDE_BAR)[number];
@@ -54,11 +55,10 @@ const MenuItem = ({ item, projectId }: MenuItemProps) => {
                     `:${IDS_ROUTE.PROJECT_ID}`,
                     projectId + "",
                 )}
-                className={({ isActive, isPending }) =>
+                className={({ isActive }) =>
                     clsx({
-                        "flex w-full gap-2 rounded-md p-2": true,
-                        "bg-amber-200": isActive,
-                        "bg-blue-400": isPending,
+                        "flex w-full gap-2 rounded-md p-2 hover:bg-gray-100 duration-200": true,
+                        "text-blue-500": isActive,
                     })
                 }
             >

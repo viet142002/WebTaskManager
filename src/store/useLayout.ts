@@ -4,6 +4,8 @@ export interface IModalConfirm {
     title: string,
     des: string,
     isOpen: boolean,
+    titleCancel?: string;
+    titleOk?: string;
     onCancel?: (props?: unknown) => void
     onOk?: (props?: unknown) => void
 }
@@ -21,6 +23,8 @@ const INIT_VALUE: ILayout = {
     modalConfirm: {
         title: '',
         des: '',
+        titleOk: undefined,
+        titleCancel: undefined,
         isOpen: false,
         onCancel: undefined,
         onOk: undefined

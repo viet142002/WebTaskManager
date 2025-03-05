@@ -51,7 +51,7 @@ function useSidebar() {
   return context
 }
 
-function SidebarProvider({
+const SidebarProvider = React.memo(({
   defaultOpen = true,
   open: openProp,
   onOpenChange: setOpenProp,
@@ -63,9 +63,12 @@ function SidebarProvider({
   defaultOpen?: boolean
   open?: boolean
   onOpenChange?: (open: boolean) => void
-}) {
+}) => {
   const isMobile = useIsMobile()
   const [openMobile, setOpenMobile] = React.useState(false)
+
+  console.log('re-render sidbar');
+  
 
   // This is the internal state of the sidebar.
   // We use openProp and setOpenProp for control from outside the component.
@@ -147,7 +150,7 @@ function SidebarProvider({
       </TooltipProvider>
     </SidebarContext.Provider>
   )
-}
+});
 
 function Sidebar({
   side = "left",

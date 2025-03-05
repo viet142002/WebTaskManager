@@ -3,7 +3,7 @@ import instanceAxios from "@/services/instanceAxios";
 
 const isUseFakeApi = true;
 
-export const taskService = {
+export const rolesService = {
     create: async ({ pass, email }: { pass: string, email: string }) => {
         return instanceAxios.post('/auth/login', {
             password: pass,
@@ -24,28 +24,31 @@ export const taskService = {
             fullname
         })
     },
-    getById: async (id: number) => {
+    getByUser: async (userId: number) => {
         if (isUseFakeApi) {
-            return fakeApi('tasks', {
-                id
+            return fakeApi('userRoleInProject', {
+                member: userId
             })
         }
         return instanceAxios.post('/auth/register', {
-            id
+            userId
         })
     },
-    getAll: async ({ assignTo, projectId, creator }: { assignTo?: number, projectId?: number, creator?: number, }) => {
+    getAll: async ({ userId }: { userId?: number }) => {
         if (isUseFakeApi) {
-            const data = fakeApi('tasks', {
-                projectId,
-                assignTo,
-                creator
+            const data = fakeApi('projects', {
+                members: userId ? [userId] : []
+            }, {
+                members: (a, b) => {
+                    if ((b as Array<number>)?.length === 0) return true;
+                    return (a as Array<number>)?.includes((b as Array<number>)[0])
+                }
             })
             delay();
             return data
         }
         return instanceAxios.post('/auth/register', {
-            assignTo, projectId, creator
+            userId
         })
     },
 }

@@ -18,6 +18,7 @@ import { authService } from "@/services/auth.service";
 import { useTransition } from "react";
 import Spinner from "@/components/Loading/Spinner";
 import ButtonNav from "@/components/ui/button-nav";
+import { useTranslation } from "@/hooks";
 
 const formSchema = z.object({
     firstname: z.string().min(2, {
@@ -46,6 +47,7 @@ const DEFAULT_VALUES_REGISTER: z.infer<typeof formSchema> = {
 };
 
 function RegisterForm() {
+    const { t } = useTranslation();
     const [isPendingRegister, startIsPendingRegister] = useTransition();
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -72,16 +74,18 @@ function RegisterForm() {
     return (
         <section className="flex flex-col justify-center">
             <div>
-                <h1 className="text-4xl font-bold text-white">Tạo tài khoản</h1>
+                <h1 className="text-4xl font-bold text-white">
+                    {t('register')}
+                </h1>
                 <p className="my-3 text-lg text-white">
-                    Bạn đã có tài khoản?{" "}
+                    {t('had_account')}{" "}
                     <ButtonNav
                         className="duration-200 hover:text-blue-500 p-0 text-white text-base"
                         to={ROUTES.LOGIN}
                         variant='link'
                         viewTransition
                     >
-                        Đăng nhập
+                        {t('login')}
                     </ButtonNav>
                 </p>
             </div>

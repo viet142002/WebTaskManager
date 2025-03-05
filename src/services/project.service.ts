@@ -1,7 +1,8 @@
 import { delay, fakeApi } from "@/services/fakeApi";
 import instanceAxios from "@/services/instanceAxios";
+import { IProject, IResponse } from "@/utils/types";
 
-const isUseFakeApi =import.meta.env.VITE_IS_FAKE_API;
+const isUseFakeApi = true;
 
 export const projectService = {
     create: async ({ pass, email }: { pass: string, email: string }) => {
@@ -34,18 +35,22 @@ export const projectService = {
             id
         })
     },
-    getAll: async ({ userId }: { userId?: number }) => {
+    getAll: async (userId?: number): Promise<IResponse<IProject>> => {
         if (isUseFakeApi) {
             const data = fakeApi('projects', {
                 members: userId ? [userId] : []
             }, {
                 members: (a, b) => {
-                    if ((b as Array<number>)?.length === 0) return true;
+                    if ((b as Array<number>)?.length === 0) return false;
                     return (a as Array<number>)?.includes((b as Array<number>)[0])
                 }
             })
             delay();
-            return data
+            return {
+                message: 'success',
+                data: data,
+                status: 200,
+            };
         }
         return instanceAxios.post('/auth/register', {
             userId

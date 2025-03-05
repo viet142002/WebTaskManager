@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import { useTransition } from "react";
+import { useCallback, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { z } from "zod";
@@ -21,8 +21,9 @@ import { authService } from "@/services/auth.service";
 import { ErrorWithCode } from "@/utils/helper";
 import Spinner from "@/components/Loading/Spinner";
 import ButtonNav from "@/components/ui/button-nav";
-import ChangeLang from "@/components/common/ChangeLang";
 import { useTranslation } from "@/hooks";
+import { useAuth } from "@/store/useAuth";
+import { IUser } from "@/utils/types";
 
 const formSchema = z.object({
     email: z.string().email("Vui lòng nhập đúng email"),
@@ -45,6 +46,7 @@ const DEFAULT_VALUES_REGISTER: z.infer<typeof formSchema> = {
 function LoginForm() {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const login = useAuth(state => state.login);
     const [isPendingLogin, startTransaction] = useTransition();
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -52,27 +54,28 @@ function LoginForm() {
         defaultValues: DEFAULT_VALUES_REGISTER,
     });
 
-    const login = async (values: z.infer<typeof formSchema>) => {
+    const handleLogin = useCallback(async (values: z.infer<typeof formSchema>) => {
         try {
             const res = await authService.login({
                 email: values.email,
                 pass: values.password,
-            });
-            console.log(res);
-            navigate(ROUTES.OVERVIEW);
+            }) as IUser[];
+            if (res.length) {
+                login(res[0])
+                navigate(ROUTES.OVERVIEW);
+            }
         } catch (error) {
             toast.error((error as ErrorWithCode).message);
         }
-    }
+    }, [login, navigate])
 
     const onSubmit = (values: z.infer<typeof formSchema>) => {
-        startTransaction(() => login(values));
+        startTransaction(() => handleLogin(values));
     };
 
     return (
         <section className="flex flex-col justify-center">
             <div>
-                <ChangeLang /> 
                 <h1 className="text-4xl font-bold text-white">
                     {t('login')}
                 </h1>
@@ -84,7 +87,7 @@ function LoginForm() {
                         variant='link'
                         viewTransition
                     >
-                        Đăng ký
+                        {t('register')}
                     </ButtonNav>
                 </p>
             </div>
@@ -131,7 +134,7 @@ function LoginForm() {
                         className="w-full bg-black/20 transition-all duration-200 hover:bg-black/30"
                         size={"lg"}
                     >
-                        Đăng nhập {isPendingLogin && <Spinner />}
+                        {t('login')} {isPendingLogin && <Spinner />}
                     </Button>
                 </form>
             </Form>

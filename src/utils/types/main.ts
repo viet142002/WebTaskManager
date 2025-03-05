@@ -4,10 +4,10 @@ export interface IProject extends IDefaultModel {
     name: string,
     des: string,
     tasks: Array<number>
-    status: Array<number>
+    statuses: Array<number>
     totalTask: number,
     successTask: number,
-    creator: string;
+    creator: number;
 }
 
 export interface ITask extends IDefaultModel {

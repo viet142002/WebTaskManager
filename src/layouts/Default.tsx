@@ -1,23 +1,24 @@
-import { Outlet, useNavigation } from "react-router";
+import { Outlet } from "react-router";
 
-import LoadingPencil from "@/components/Loading/LoadingPencil";
 import MainSideBar from "@/components/SideBar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { useInitOverView } from "@/hooks/queries/useInitDashBoard";
+import { memo } from "react";
+// import { useAuth } from "@/store/useAuth";
 
 function DefaultLayout() {
-    const navigation = useNavigation();
-    console.log(navigation);
+    const res = useInitOverView();
+
+    console.log(res);
     
-    const isNavigating = Boolean(navigation.location);
     return (
         <SidebarProvider>
             <MainSideBar />
             <main className="relative">
-                {isNavigating && <LoadingPencil />}
                 <Outlet />
             </main>
         </SidebarProvider>
     );
 }
 
-export default DefaultLayout;
+export default memo(DefaultLayout);

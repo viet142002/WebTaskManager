@@ -1,5 +1,5 @@
-import { IModalConfirm, useLayout } from "@/store/useLayout";
-import { useTransition } from "react";
+import { useLayout } from "@/store/useLayout";
+import { memo, useTransition } from "react";
 import { useShallow } from "zustand/react/shallow";
 
 import {
@@ -13,43 +13,56 @@ import {
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import Spinner from "@/components/Loading/Spinner";
+import { useTranslation } from "@/hooks";
 
-function ModalConfirm({ isOpen, title, des, onCancel = () => {}, onOk = () => {} }: IModalConfirm) {
+function ModalConfirm() {
     const [isPendingCancel, startTransitionCancel] = useTransition();
     const [isPendingOke, startTransitionOke] = useTransition();
-    const closeModalConfirm = useLayout(useShallow(state => state.closeModalConfirm));
+    const { t } = useTranslation(); 
+    const { closeModalConfirm, modalConfirm } = useLayout(
+        useShallow((state) => ({
+            closeModalConfirm: state.closeModalConfirm,
+            modalConfirm: state.modalConfirm,
+        })),
+    );
 
     const handleCancel = () => {
         startTransitionCancel(async () => {
-            await onCancel();
-            closeModalConfirm();
-        }) 
-    }
-    const handleOke = () => {
-        startTransitionOke(async () => {
-            await onOk();
+            if (modalConfirm.onCancel) {
+                await modalConfirm.onCancel();
+            }
             closeModalConfirm();
         });
-    }
+    };
+    const handleOke = () => {
+        startTransitionOke(async () => {
+            if (modalConfirm.onOk) {
+                await modalConfirm.onOk();
+            }
+            closeModalConfirm();
+        });
+    };
 
     return (
-        <AlertDialog open={isOpen} >
+        <AlertDialog open={modalConfirm.isOpen}>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>
-                        {title}
-                    </AlertDialogTitle>
+                    <AlertDialogTitle>{modalConfirm.title}</AlertDialogTitle>
                     <AlertDialogDescription>
-                        {des}
+                        {modalConfirm.des}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel onClick={handleCancel}>Cancel {isPendingCancel ? <Spinner /> : ''}</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleOke}>Continue {isPendingOke ? <Spinner /> : ''}</AlertDialogAction>
+                    <AlertDialogCancel onClick={handleCancel}>
+                        {modalConfirm?.titleCancel ?? t('cancel')} {isPendingCancel && <Spinner />}
+                    </AlertDialogCancel>
+                    <AlertDialogAction onClick={handleOke}>
+                        {modalConfirm?.titleOk ?? t('confirm')} {isPendingOke && <Spinner />}
+                    </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
     );
 }
 
-export default ModalConfirm;
+export default memo(ModalConfirm);
